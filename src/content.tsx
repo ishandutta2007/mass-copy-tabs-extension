@@ -16,6 +16,7 @@ import { TodoProvider } from "context/Todo";
 import usePressOnEsc from "hooks/usePressOnEsc";
 import { layer1 } from "constants/layers";
 import Global from './Global'
+import browser from "webextension-polyfill";
 
 const GlobalStyle = createGlobalStyle`
   :host {
@@ -30,45 +31,44 @@ const appContainer = document.createElement("div");
 shadow.appendChild(styleContainer);
 shadow.appendChild(appContainer);
 document.body.appendChild(root);
-const FixedTodoContainer = styled(TodoContainer)`
-  position: fixed;
-  top: 0;
-  right: 0;
-  transform: ${props => (props.active ? "translateX(0)" : "translateX(100%)")};
-  transition: transform 0.2s ease-in-out;
-  z-index: ${layer1};
-  box-shadow: ${props =>
-    props.active ? "0 0 15px 10px rgba(0,0,0,.1)" : "none"};
-`;
+
+function copyToClipboard(text) {
+  if (window.clipboardData && window.clipboardData.setData) {
+    // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+    return window.clipboardData.setData("Text", text);
+  } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+    var textarea = document.createElement("textarea");
+    textarea.textContent = text;
+    textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+    }
+    catch (ex) {
+      console.warn("Copy to clipboard failed.", ex);
+      return prompt("Copy to clipboard: Ctrl+C, Enter", text);
+    }
+    finally {
+      document.body.removeChild(textarea);
+    }
+  }
+}
+
 const App = () => {
-  const [isActive, toggle] = useState(false);
-  const ref = useRef(null);
-  useClickOutside(ref, () => {
-    console.log("useClickOutside:Global.sidebar_locked", Global.sidebar_locked);
-    console.log("useClickOutside:isActive", isActive);
-    if (Global.sidebar_locked == false)
-      toggle(false);
+  browser.runtime.onMessage.addListener((msg) => {
+    console.log("content", msg);
+    if (msg.greeting === 'sendTabInfo') {
+      try {
+        const { tabs_string } = msg.payload;
+        console.log('content:msg:', msg);
+        copyToClipboard(msg.payload.tabs_string)
+      } catch(error){
+        console.log('content:error:', error);
+      }
+    }
+    return true;
   });
-  usePressOnEsc(() => {
-    console.log("useClickOutside:Global.sidebar_locked", Global.sidebar_locked);
-    console.log("useClickOutside:isActive", isActive);
-    if (Global.sidebar_locked == false)
-      toggle(false);
-  });
-  return (<div/>
-    // <StyleSheetManager target={styleContainer}>
-    //   <OptionsProvider>
-    //     <ThemeProvider>
-    //       <TodoProvider>
-    //         <GlobalStyle />
-    //         <FixedPlusButton onClick={() => toggle(!isActive)} />
-    //         <FixedTodoContainer active={isActive||Global.sidebar_locked} ref={ref}>
-    //           <Todo />
-    //         </FixedTodoContainer>
-    //       </TodoProvider>
-    //     </ThemeProvider>
-    //   </OptionsProvider>
-    // </StyleSheetManager>
-  );
+  return (<div/>);
 };
 ReactDOM.render(<App />, appContainer);

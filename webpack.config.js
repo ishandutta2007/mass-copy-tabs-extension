@@ -1,10 +1,7 @@
 const HTMLPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
-// const ExtensionReloader = require('webpack-extension-reloader');
-// const ManifestVersionSyncPlugin = require('webpack-manifest-version-sync-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-// const BrowserExtensionPlugin = require("extension-build-webpack-plugin");
 const ZipPlugin = require('zip-webpack-plugin');
 
 module.exports = {
@@ -65,22 +62,17 @@ module.exports = {
       { from: './src/assets', to: './assets' },
       { from: './src/manifest.json', to: './manifest.json' },
     ]),
-    // new ExtensionReloader({
-    //   manifest: path.resolve(__dirname, './src/manifest.json'),
-    // }),
-    // new ManifestVersionSyncPlugin(),
-    // new BrowserExtensionPlugin({devMode: false, name: "build/chromium.zip", directory: "src", updateType: "none"}),
     new ZipPlugin({
       filename: 'chromium.zip'
     })
   ],
   optimization: {
-    // minimize: true,
+    minimize: true,
     minimizer: [
       new UglifyJSPlugin({
         uglifyOptions: {
           compress: {
-            // drop_console: true,
+            drop_console: true,
             drop_debugger: true,
           }
         }
