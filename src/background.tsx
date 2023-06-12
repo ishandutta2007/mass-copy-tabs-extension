@@ -1,10 +1,9 @@
 import "libs/polyfills";
 import browser from "webextension-polyfill";
 
-browser.runtime.onMessage.addListener(async (msg, sender) => {
+browser.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
   if (msg.greeting === "showOptionsPage") {
     browser.runtime.openOptionsPage();
-    return true;
   }
   else if (msg.greeting === "getTabInfo") {
     browser.tabs.query({}).then(async (tabs) => {
@@ -24,6 +23,7 @@ browser.runtime.onMessage.addListener(async (msg, sender) => {
     }).catch((error) => {
       console.error('background:getTabInfo:Error:', error);
     });
-    return true;
   }
+  sendResponse({});
+  return true;
 });
