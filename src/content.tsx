@@ -27,6 +27,11 @@ shadow.appendChild(appContainer);
 document.body.appendChild(root);
 
 const App = () => {
+  browser.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
+    if (msg.greeting === "copySuccessful") {
+      alert("copied " + msg.what + " successfully");
+    }
+  });
   return (<div/>);
 };
 ReactDOM.render(<App />, appContainer);
