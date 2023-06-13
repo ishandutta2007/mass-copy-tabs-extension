@@ -1,13 +1,14 @@
 {
   "version": "0.0.1",
-  "name": "tabs_sidebar",
+  "name": "mass_copy_tabs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ishandutta2007/tabs_sidebar_extension"
+    "url": "https://github.com/ishandutta2007/mass-copy-tabs-extension"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production yarn webpack -c webpack.config.js --mode production",
-    "watch": "cross-env NODE_ENV=development yarn webpack -c webpack.config.js --mode development -w"
+    "build-dev": "cross-env NODE_ENV=production yarn webpack -c webpack.dev.config.js --mode development",
+    "watch": "cross-env NODE_ENV=development yarn webpack -c webpack.dev.config.js --mode development -w"
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
