@@ -67,13 +67,13 @@ module.exports = {
     })
   ],
   optimization: {
-    minimize: true,
+    minimize: false,
     minimizer: [
       new UglifyJSPlugin({
         uglifyOptions: {
           compress: {
-            drop_console: true,
-            drop_debugger: true,
+            // drop_console: true,
+            // drop_debugger: true,
           }
         }
       })

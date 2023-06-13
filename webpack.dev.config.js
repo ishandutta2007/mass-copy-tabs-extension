@@ -67,8 +67,9 @@ module.exports = {
   ],
   optimization: {
     minimize: false,
+    minimizer: [    ]
   },
-  mode: 'development',
+  mode: 'production',
   stats: 'minimal',
   performance: {
     hints: false,
