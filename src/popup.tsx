@@ -10,10 +10,6 @@ import browser from "webextension-polyfill";
 import './styles.scss'
 import { isIOS, changeToast } from './utils'
 
-// import { useToasts } from '@geist-ui/core'
-// const { setToast } = useToasts()
-
-
 function copyToClipboard(text, disp_msg) {
   if (window.clipboardData && window.clipboardData.setData) {
     // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
@@ -38,38 +34,45 @@ function copyToClipboard(text, disp_msg) {
 }
 
 const copy_titles_links = () => {
-  browser.runtime.sendMessage({ greeting: "getTabInfo", titles: true }).then( function (response) {
-    try {
-      console.log("copy_titles_links");
-      console.log(response);
-      let ret = copyToClipboard(response, "titles & links");
-      console.log("ret=", ret);
-      chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
-        var activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "titles & links"});
-      });
-    } catch(error){
-      console.log('content:error:', error);
-    }
-  });
+  try {
+    browser.runtime.sendMessage({ greeting: "getTabInfo", titles: true }).then( function (response) {
+      try {
+        console.log("copy_titles_links");
+        console.log(response);
+        let ret = copyToClipboard(response, "titles & links");
+        console.log("ret=", ret);
+        chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
+          var activeTab = tabs[0];
+          chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "titles & links"});
+        });
+      } catch(error){
+        console.log('popup:error:', error);
+      }
+    });
+  } catch(error) {
+    console.log('popup:error:', error);
+  }
 }
 
 const copy_links = () => {
-  browser.runtime.sendMessage({ greeting: "getTabInfo", titles: false }).then( function (response) {
-    try {
-      console.log("copy_links");
-      console.log(response);
-      let ret = copyToClipboard(response, "links");
-      console.log("ret=", ret);
-      chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
-        var activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "links"});
-      });
-
-    } catch(error){
-      console.log('content:error:', error);
-    }
-  });
+  try {
+    browser.runtime.sendMessage({ greeting: "getTabInfo", titles: false }).then( function (response) {
+      try {
+        console.log("copy_links");
+        console.log(response);
+        let ret = copyToClipboard(response, "links");
+        console.log("ret=", ret);
+        chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
+          var activeTab = tabs[0];
+          chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "links"});
+        });
+      } catch(error){
+        console.log('popup:error:', error);
+      }
+    });
+  } catch(error){
+    console.log('popup:error:', error);
+  }
 }
 
 const Popup = () => {
