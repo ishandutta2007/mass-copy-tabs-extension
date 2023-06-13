@@ -59,18 +59,20 @@ const copy_links = () => {
 
 const Popup = () => {
   return (<div>
-      <ul style="width:max-content; " >
-        <li id="actionCopy" style="display: block; ">
-          <div class="menu">
-            <button class="text" onClick={copy_titles_links}>Copy Titles and Links</button>
-          </div>
-        </li>
-        <li id="actionCopy" style="display: block; ">
-          <div class="menu">
-            <button class="text" onClick={copy_links}>Copy Links Only</button>
-          </div>
-        </li>
-      </ul>
+    <ul >
+      <li id="actionCopy" style="display: block; ">
+        <div class="menu">
+          <span class="text" onClick={copy_titles_links}>Copy Titles and Links</span>
+        </div>
+      </li>
+      <div class="separator"></div>
+      <li id="actionCopy" style="display: block; ">
+        <div class="menu">
+          <span class="text" onClick={copy_links}>Copy Links Only</span>
+        </div>
+      </li>
+      <div class="separator"></div>
+    </ul>
   </div>);
 };
 
