@@ -16,7 +16,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: {
       react: 'preact/compat',
@@ -40,6 +40,16 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+         test: /\.scss$/,
+         use: [{
+            loader: "style-loader"
+          }, {
+            loader: "css-loader"
+          }, {
+            loader: "sass-loader"
+         }]
       },
       {
         test: /\.svg$/,
