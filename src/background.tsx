@@ -6,24 +6,21 @@ browser.runtime.onMessage.addListener(async (msg, sender, sendResponse) => {
     browser.runtime.openOptionsPage();
   }
   else if (msg.greeting === "getTabInfo") {
-    browser.tabs.query({}).then(async (tabs) => {
+    return browser.tabs.query({}).then(async (tabs) => {
       console.log('background:getTabInfo:tabs:', tabs);
       console.log('background:getTabInfo:sender:', sender);
       let tabs_string = "";
-      let active_tab;
-      for (let i=0;i< tabs.length; i++) {
-        tabs_string = tabs_string + tabs[i].title + " - " + tabs[i].url + "\n";
-        if (tabs[i].active == true) {
-          active_tab = tabs[i];
-        }
+      for (let i = 0;i < tabs.length; i++) {
+        tabs_string = tabs_string + (msg.titles == true ? tabs[i].title  + " - " : "") + tabs[i].url + "\n";
       }
       const response = { greeting: 'sendTabInfo', payload: { tabs_string } };
-      browser.tabs.sendMessage(active_tab.id, response); // Send the response directly to the content script
-      return true;
+      sendResponse(tabs_string);
+      return tabs_string;
     }).catch((error) => {
       console.error('background:getTabInfo:Error:', error);
+      sendResponse("");
+      return true;
     });
   }
-  sendResponse({});
   return true;
 });
