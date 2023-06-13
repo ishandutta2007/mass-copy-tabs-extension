@@ -1,12 +1,12 @@
 {
   "appName": {
-    "message": "Mass Copy Tabs − copy all urls on all tabs"
+    "message": "Mass Copy Tabs − copy all URLs on all tabs"
   },
   "appShortName": {
     "message": "Mass Copy Tabs"
   },
   "appDesc": {
-    "message": "Copy to clipboard all the urls in once click"
+    "message": "Copy to clipboard all the URLs in once click"
   },
   "placeholder": {
     "message": "Search tab"
