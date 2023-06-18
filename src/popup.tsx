@@ -43,7 +43,9 @@ const copy_titles_links = () => {
         console.log("ret=", ret);
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
           var activeTab = tabs[0];
+          console.log(ret==true ? "copySuccessful" : "copyUnsuccessful");
           chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "titles & links"});
+          return true;
         });
       } catch(error){
         console.log('popup:error:', error);
@@ -52,6 +54,7 @@ const copy_titles_links = () => {
   } catch(error) {
     console.log('popup:error:', error);
   }
+  return true;
 }
 
 const copy_links = () => {
@@ -64,7 +67,9 @@ const copy_links = () => {
         console.log("ret=", ret);
         chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
           var activeTab = tabs[0];
+          console.log(ret==true ? "copySuccessful" : "copyUnsuccessful");
           chrome.tabs.sendMessage(activeTab.id, {greeting: ret==true ? "copySuccessful" : "copyUnsuccessful", what: "links"});
+          return true;
         });
       } catch(error){
         console.log('popup:error:', error);
@@ -73,6 +78,7 @@ const copy_links = () => {
   } catch(error){
     console.log('popup:error:', error);
   }
+  return true;
 }
 
 const Popup = () => {

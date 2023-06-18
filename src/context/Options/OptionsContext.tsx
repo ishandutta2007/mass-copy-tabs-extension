@@ -30,6 +30,7 @@ const OptionsProvider = ({ children }) => {
   useEffect(() => {
     browser.storage.onChanged.addListener(changes => {
       if (changes.options) setState(changes.options.newValue);
+      return true;
     });
   }, []);
   return (

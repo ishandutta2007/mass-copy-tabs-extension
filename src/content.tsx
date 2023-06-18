@@ -31,6 +31,10 @@ const App = () => {
     if (msg.greeting === "copySuccessful") {
       alert("copied " + msg.what + " successfully");
     }
+    else if (msg.greeting === "copyUnsuccessful") {
+      alert("Please retry");
+    }
+    return true;
   });
   return (<div/>);
 };

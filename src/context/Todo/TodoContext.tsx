@@ -71,6 +71,7 @@ const TodoProvider = ({ children }) => {
       if (changes.list) {
         dispatch({ type: INIT, payload: changes.list.newValue });
       }
+      return true;
     });
   }, []);
   // Initialize the list with saved items or with initial data
